@@ -1,0 +1,126 @@
+{
+  "project_info": {
+    "project_number": "688131321583",
+    "project_id": "authentication-b02f7",
+    "storage_bucket": "authentication-b02f7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:688131321583:android:a7468983642741185db51a",
+        "android_client_info": {
+          "package_name": "com.example.campus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "688131321583-95mup9v63v4r4c4f41u0ith3l60mi98b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_L3r6riLiMbRI-7jy0sHOztkxEH5KEk8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "688131321583-95mup9v63v4r4c4f41u0ith3l60mi98b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "688131321583-kh6pnbut54hf23ifgniii8ms2bn7lmt4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.modernlogintute"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:688131321583:android:ec99462ab23a5a6d5db51a",
+        "android_client_info": {
+          "package_name": "com.example.campus_assist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "688131321583-qk9lbh262cj793f01q2gubgpgbtimqlu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.campus_assist",
+            "certificate_hash": "050b72430a6655302602212e01542ab6aa8b3eab"
+          }
+        },
+        {
+          "client_id": "688131321583-95mup9v63v4r4c4f41u0ith3l60mi98b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_L3r6riLiMbRI-7jy0sHOztkxEH5KEk8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "688131321583-95mup9v63v4r4c4f41u0ith3l60mi98b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "688131321583-kh6pnbut54hf23ifgniii8ms2bn7lmt4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.modernlogintute"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:688131321583:android:cae547ad25f612c05db51a",
+        "android_client_info": {
+          "package_name": "com.example.modernlogintute"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "688131321583-95mup9v63v4r4c4f41u0ith3l60mi98b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_L3r6riLiMbRI-7jy0sHOztkxEH5KEk8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "688131321583-95mup9v63v4r4c4f41u0ith3l60mi98b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "688131321583-kh6pnbut54hf23ifgniii8ms2bn7lmt4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.modernlogintute"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
