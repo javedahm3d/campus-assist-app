@@ -14,6 +14,7 @@ class JoinClassScreen extends StatefulWidget {
 class _JoinClassScreenState extends State<JoinClassScreen> {
   TextEditingController classCode = TextEditingController();
   bool isButtonActive = false;
+  var userData;
 
   @override
   void initState() {
@@ -23,12 +24,21 @@ class _JoinClassScreenState extends State<JoinClassScreen> {
         isButtonActive = classCode.text.isNotEmpty;
       });
     });
+    getdata();
   }
 
   @override
   void dispose() {
     super.dispose();
     classCode.dispose();
+  }
+
+  getdata() async {
+    userData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    print(userData.data()!['Roll Number'].toString());
   }
 
   @override
@@ -53,7 +63,7 @@ class _JoinClassScreenState extends State<JoinClassScreen> {
                     .doc(classCode.text.trim())
                     .update({
                   'members': FieldValue.arrayUnion(
-                      [FirebaseAuth.instance.currentUser!.uid])
+                      [userData.data()!['Roll Number'].toString()])
                 });
 
                 DocumentSnapshot<Map<String, dynamic>> classSnap =
@@ -64,7 +74,10 @@ class _JoinClassScreenState extends State<JoinClassScreen> {
 
                 Navigator.pop(context);
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ClassScreen(snap: classSnap),
+                  builder: (context) => ClassScreen(
+                    snap: classSnap,
+                    isOwner: false,
+                  ),
                 ));
               },
               child: Container(

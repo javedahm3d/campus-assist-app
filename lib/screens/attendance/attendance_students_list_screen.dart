@@ -1,17 +1,33 @@
+import 'package:campus/cards/attendanceListCard.dart';
+import 'package:campus/screens/attendance/attendanceVar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AttendanceScreen extends StatefulWidget {
   final className;
   final classId;
+  final List members;
   const AttendanceScreen(
-      {super.key, required this.className, required this.classId});
+      {super.key,
+      required this.className,
+      required this.classId,
+      required this.members});
 
   @override
   State<AttendanceScreen> createState() => _AttendanceScreenState();
 }
 
 class _AttendanceScreenState extends State<AttendanceScreen> {
+  List member_index = [];
+  int abs = 0;
+  bool istapped = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,102 +39,95 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         ),
         backgroundColor: Colors.white,
       ),
-      body: ListView.builder(
-        itemCount: 30,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.all(3),
-            child: Container(
-              width: double.infinity,
-              height: 140,
-              color: Colors.orangeAccent,
-              child: Column(
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // avatar
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: CircleAvatar(
-                          radius: 30,
+      body: Stack(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: 30,
+              itemBuilder: (context, index) {
+                return AttendaceListCard();
+              },
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 9),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0)
+                          .copyWith(right: 60, left: 60),
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            //present count
+                            Row(
+                              children: [
+                                Text(
+                                  "Present  ",
+                                  style: TextStyle(color: Colors.grey.shade800),
+                                ),
+                                Text(
+                                  "60",
+                                  style: TextStyle(
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+
+                            // absent count
+                            Row(
+                              children: [
+                                Text(
+                                  "Absent  ",
+                                  style: TextStyle(color: Colors.grey.shade800),
+                                ),
+                                Text(
+                                  absentCount.toString(),
+                                  style: TextStyle(
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-
-                      //name
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12)
-                                .copyWith(bottom: 5),
-                            child: Text(
-                              'javed ahmed',
-                              style: GoogleFonts.aBeeZee(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Text(
-                            '191104032',
-                            style: GoogleFonts.aBeeZee(
-                                color: Colors.black,
-                                fontSize: 16,
+                    ),
+                    InkWell(
+                      child: Container(
+                        width: 160,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            color: Colors.lightBlue,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Center(
+                          child: Text(
+                            'Submit',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold),
                           ),
-                          SizedBox(
-                            height: 22,
-                          ),
-                          Row(
-                            children: [
-                              //present buttton
-                              InkWell(
-                                child: Container(
-                                  width: 140,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          color: Colors.white, width: 2)),
-                                  child: Center(
-                                      child: Text(
-                                    'Present',
-                                    style: GoogleFonts.aBeeZee(
-                                        color: Colors.white, fontSize: 18),
-                                  )),
-                                ),
-                              ),
-                              SizedBox(width: 18),
-
-                              //absent button
-                              InkWell(
-                                child: Container(
-                                  width: 140,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 201, 13, 0),
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          color: Colors.white, width: 2)),
-                                  child: Center(
-                                      child: Text(
-                                    'Absent',
-                                    style: GoogleFonts.aBeeZee(
-                                        color: Colors.white, fontSize: 18),
-                                  )),
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      )
-                    ],
-                  )
-                ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          );
-        },
+          )
+        ],
       ),
     );
   }

@@ -9,7 +9,8 @@ import 'package:flutter/material.dart';
 
 class ClassScreen extends StatefulWidget {
   final snap;
-  const ClassScreen({super.key, this.snap});
+  final bool isOwner;
+  const ClassScreen({super.key, this.snap, required this.isOwner});
 
   @override
   State<ClassScreen> createState() => _ClassScreenState();
@@ -35,7 +36,8 @@ class _ClassScreenState extends State<ClassScreen> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               itemBuilder: (context) => [
-                PopupMenuItem(child: Text('edit class')),
+                PopupMenuItem(
+                    child: widget.isOwner ? Text('edit class') : null),
                 PopupMenuItem(value: 2, child: Text('view class code')),
               ],
               onSelected: (value) {
@@ -83,68 +85,77 @@ class _ClassScreenState extends State<ClassScreen> {
         //floating button
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: SizedBox(
-          height: 40,
-          width: 40,
-          child: FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: (() {
-              showModalBottomSheet(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(20))
-                      .copyWith(topRight: Radius.circular(20)),
-                ),
-                context: context,
-                builder: (context) {
-                  return Container(
-                    height: 100,
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(10).copyWith(top: 20),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => UploadPostScreen(
-                                    classId: widget.snap['class id'].toString(),
-                                    classname: widget.snap['class'].toString()),
-                              ));
-                            },
-                            child: Text(
-                              'upload post',
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.grey.shade800),
-                            ),
-                          ),
+            height: 40,
+            width: 40,
+            child: widget.isOwner
+                ? FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: (() {
+                      showModalBottomSheet(
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.only(topLeft: Radius.circular(20))
+                                  .copyWith(topRight: Radius.circular(20)),
                         ),
-                        Container(
-                          padding: EdgeInsets.all(10),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AttendanceScreen(
-                                      className: widget.snap['class'],
-                                      classId: widget.snap['class id'],
+                        context: context,
+                        builder: (context) {
+                          return Container(
+                            height: 100,
+                            child: Column(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(10).copyWith(top: 20),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) => UploadPostScreen(
+                                            classId: widget.snap['class id']
+                                                .toString(),
+                                            classname: widget.snap['class']
+                                                .toString()),
+                                      ));
+                                    },
+                                    child: Text(
+                                      'upload post',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey.shade800),
                                     ),
-                                  ));
-                            },
-                            child: Text(
-                              'take attendance',
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.grey.shade800),
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(10),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                AttendanceScreen(
+                                              className: widget.snap['class'],
+                                              classId: widget.snap['class id'],
+                                              members: widget.snap['members'],
+                                            ),
+                                          ));
+                                    },
+                                    child: Text(
+                                      'take attendance',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey.shade800),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            }),
-          ),
-        ));
+                          );
+                        },
+                      );
+                    }),
+                  )
+                : null));
   }
 }

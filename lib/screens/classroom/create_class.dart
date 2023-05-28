@@ -85,7 +85,10 @@ class _CreateClassScreenState extends State<CreateClassScreen> {
       Navigator.pop(context);
 
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => ClassScreen(snap: classSnap)));
+          builder: (context) => ClassScreen(
+                snap: classSnap,
+                isOwner: true,
+              )));
     } catch (e) {
       ShowMessage().showMessage(e.toString().replaceAll('-', ''), context);
     }

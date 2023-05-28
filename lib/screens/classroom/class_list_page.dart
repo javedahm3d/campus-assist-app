@@ -7,10 +7,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ClassListPage extends StatelessWidget {
+class ClassListPage extends StatefulWidget {
   ClassListPage({super.key});
 
+  @override
+  State<ClassListPage> createState() => _ClassListPageState();
+}
+
+class _ClassListPageState extends State<ClassListPage> {
   final user = FirebaseAuth.instance.currentUser!;
+  bool isOwner = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +40,23 @@ class ClassListPage extends StatelessWidget {
               );
             }
             return ListView.builder(
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) => ClassroomCard(
-                snap: snapshot.data!.docs[index].data(),
-              ),
-            );
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  //checking if its owner
+                  var data = snapshot.data!.docs[index].data();
+                  print(data['owner uid']);
+                  // print(user.uid);
+                  if (data['owner uid'] == user.uid) {
+                    isOwner = true;
+                  } else {
+                    isOwner = false;
+                  }
+
+                  return ClassroomCard(
+                    snap: snapshot.data!.docs[index].data(),
+                    isOwner: isOwner,
+                  );
+                });
           }),
 
       //drawer

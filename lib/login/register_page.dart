@@ -59,7 +59,7 @@ class _RegisterPageState extends State<RegisterPage> {
               'uid': value.user!.uid,
             });
           });
-
+          print('control was here');
           //pop the loading circle
           Navigator.pop(context);
         } on FirebaseAuthException catch (e) {

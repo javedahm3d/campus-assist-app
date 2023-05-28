@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 
 class ClassroomCard extends StatefulWidget {
   final snap;
-  const ClassroomCard({super.key, required this.snap});
+  final bool isOwner;
+  const ClassroomCard({super.key, required this.snap, required this.isOwner});
 
   @override
   State<ClassroomCard> createState() => _ClassroomCardState();
@@ -22,6 +23,7 @@ class _ClassroomCardState extends State<ClassroomCard> {
         onTap: () => Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => ClassScreen(
             snap: widget.snap,
+            isOwner: widget.isOwner,
           ),
         )),
         child: Column(
@@ -55,22 +57,38 @@ class _ClassroomCardState extends State<ClassroomCard> {
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500),
                           ),
+                          Container(
+                            child: widget.isOwner
+                                ? Image.asset(
+                                    'lib/images/crown.png',
+                                    width: 3,
+                                    height: 3,
+                                  )
+                                : null,
+                          ),
                           Spacer(),
-                          PopupMenuButton(
-                              child: Icon(Icons.more_vert),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              itemBuilder: (context) => [
-                                    PopupMenuItem(child: Text('edit class')),
-                                    PopupMenuItem(
-                                       onTap: () async {
-                                        await FirebaseFirestore.instance
-                                            .collection('classes')
-                                            .doc(widget.snap['class id'])
-                                            .delete();
-                                       },
-                                       child: Text('delete class')),
-                                  ])
+                          Container(
+                              child: widget.isOwner
+                                  ? PopupMenuButton(
+                                      child: Icon(Icons.more_vert),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      itemBuilder: (context) => [
+                                            PopupMenuItem(
+                                                child: Text('edit class')),
+                                            PopupMenuItem(
+                                                onTap: () async {
+                                                  await FirebaseFirestore
+                                                      .instance
+                                                      .collection('classes')
+                                                      .doc(widget
+                                                          .snap['class id'])
+                                                      .delete();
+                                                },
+                                                child: Text('delete class')),
+                                          ])
+                                  : null)
                         ],
                       ),
 
