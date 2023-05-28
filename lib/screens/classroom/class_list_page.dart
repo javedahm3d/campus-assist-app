@@ -52,10 +52,14 @@ class _ClassListPageState extends State<ClassListPage> {
                     isOwner = false;
                   }
 
-                  return ClassroomCard(
-                    snap: snapshot.data!.docs[index].data(),
-                    isOwner: isOwner,
-                  );
+                  if (data['members'].contains(user.uid) || isOwner) {
+                    return ClassroomCard(
+                      snap: snapshot.data!.docs[index].data(),
+                      isOwner: isOwner,
+                    );
+                  } else {
+                    return null;
+                  }
                 });
           }),
 

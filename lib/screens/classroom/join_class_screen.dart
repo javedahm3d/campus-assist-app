@@ -63,7 +63,8 @@ class _JoinClassScreenState extends State<JoinClassScreen> {
                     .doc(classCode.text.trim())
                     .update({
                   'members': FieldValue.arrayUnion(
-                      [userData.data()!['Roll Number'].toString()])
+                      // [userData.data()!['Roll Number'].toString()]
+                      [FirebaseAuth.instance.currentUser!.uid])
                 });
 
                 DocumentSnapshot<Map<String, dynamic>> classSnap =

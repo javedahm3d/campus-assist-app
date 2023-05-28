@@ -57,12 +57,14 @@ class _ClassroomCardState extends State<ClassroomCard> {
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500),
                           ),
+                          SizedBox(
+                            width: 10,
+                          ),
                           Container(
                             child: widget.isOwner
-                                ? Image.asset(
-                                    'lib/images/crown.png',
-                                    width: 3,
-                                    height: 3,
+                                ? Icon(
+                                    Icons.star,
+                                    color: Color.fromARGB(255, 162, 149, 27),
                                   )
                                 : null,
                           ),

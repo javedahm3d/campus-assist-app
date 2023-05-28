@@ -1,10 +1,13 @@
 import 'package:campus/screens/attendance/attendance_screen.dart';
 import 'package:campus/screens/attendance/attendance_students_list_screen.dart';
+import 'package:campus/screens/classroom/class_list_page.dart';
 import 'package:campus/screens/classroom/class_post_card.dart';
 import 'package:campus/screens/classroom/upload_post_screen.dart';
 import 'package:campus/screens/classroom/view_class_code.dart';
+import 'package:campus/screens/homePage.dart';
 import 'package:campus/widgets/navigation_drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ClassScreen extends StatefulWidget {
@@ -37,10 +40,77 @@ class _ClassScreenState extends State<ClassScreen> {
                   borderRadius: BorderRadius.circular(10)),
               itemBuilder: (context) => [
                 PopupMenuItem(
-                    child: widget.isOwner ? Text('edit class') : null),
+                    value: 1,
+                    child: widget.isOwner
+                        ? Text('edit class')
+                        : Text('leave class')),
                 PopupMenuItem(value: 2, child: Text('view class code')),
               ],
               onSelected: (value) {
+                if (value == 1) {
+                  print("1 pressed");
+                  // Navigator.of(context).pop();
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Leaving Class'),
+                        content: Text("Are You Sure Want To Proceed ?"),
+                        actions: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              InkWell(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "YES",
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                ),
+                                onTap: () async {
+                                  //Put your code here which you want to execute on Yes button click.
+                                  await FirebaseFirestore.instance
+                                      .collection('classes')
+                                      .doc(widget.snap['class id'])
+                                      .update({
+                                    'members': FieldValue.arrayRemove(
+                                        // [userData.data()!['Roll Number'].toString()]
+                                        [
+                                          FirebaseAuth.instance.currentUser!.uid
+                                        ])
+                                  });
+                                  // Navigator.pushAndRemoveUntil(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //         builder: (context) =>
+                                  //             ClassListPage()),
+                                  //     (route) => false);
+
+                                  Navigator.popUntil(context,
+                                      (Route<dynamic> route) => route.isFirst);
+                                },
+                              ),
+                              InkWell(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "NO",
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                ),
+                                onTap: () {
+                                  //Put your code here which you want to execute on No button click.
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          )
+                        ],
+                      );
+                    },
+                  );
+                }
                 if (value == 2) {
                   Navigator.push(
                       context,
