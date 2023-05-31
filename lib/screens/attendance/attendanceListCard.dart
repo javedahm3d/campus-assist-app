@@ -1,15 +1,28 @@
 import 'package:campus/screens/attendance/attendanceVar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AttendaceListCard extends StatefulWidget {
-  const AttendaceListCard({super.key});
+  final memberuid;
+  const AttendaceListCard({super.key, required this.memberuid});
 
   @override
   State<AttendaceListCard> createState() => _AttendaceListCardState();
 }
 
 class _AttendaceListCardState extends State<AttendaceListCard> {
+  var userData;
   bool istapped = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getdata();
+  }
+
+  getdata() async {}
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -43,12 +56,12 @@ class _AttendaceListCardState extends State<AttendaceListCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'firts last',
+                      userData.data()!['name'],
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                     ),
                     Text(
-                      '191104032',
+                      userData.data()!['Roll Number'],
                       style:
                           TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                     ),

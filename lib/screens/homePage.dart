@@ -4,6 +4,7 @@ import 'package:campus/components/square_grid_box.dart';
 import 'package:campus/screens/campus_annoucements/annoucements_list_screen.dart';
 import 'package:campus/screens/classroom/class_list_page.dart';
 import 'package:campus/screens/events/feed_screen.dart';
+import 'package:campus/screens/profile/profile_page.dart';
 import 'package:campus/widgets/my_appbar.dart';
 import 'package:campus/widgets/navigation_drawer.dart';
 import 'package:flutter/material.dart';
@@ -156,13 +157,18 @@ class _HomePageState extends State<HomePage> {
                   //profile picture
                   Padding(
                     padding: const EdgeInsets.only(left: 50, top: 20),
-                    child: Container(
-                        alignment: Alignment.topRight,
-                        child: CircleAvatar(
-                          radius: 50,
-                          backgroundImage: NetworkImage(
-                              'https://cdna.artstation.com/p/assets/images/images/053/054/138/large/avetetsuya-studios-alien.jpg?1661309922'),
-                        )),
+                    child: InkWell(
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ProfilePage(),
+                      )),
+                      child: Container(
+                          alignment: Alignment.topRight,
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundImage: NetworkImage(
+                                'https://cdna.artstation.com/p/assets/images/images/053/054/138/large/avetetsuya-studios-alien.jpg?1661309922'),
+                          )),
+                    ),
                   )
                 ],
               ),

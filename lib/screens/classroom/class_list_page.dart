@@ -44,8 +44,12 @@ class _ClassListPageState extends State<ClassListPage> {
                 itemBuilder: (context, index) {
                   //checking if its owner
                   var data = snapshot.data!.docs[index].data();
+
+                  print('check here');
+                  print(snapshot.data!.docs.length);
+                  print(data['class']);
                   print(data['owner uid']);
-                  // print(user.uid);
+                  print(user.uid);
                   if (data['owner uid'] == user.uid) {
                     isOwner = true;
                   } else {

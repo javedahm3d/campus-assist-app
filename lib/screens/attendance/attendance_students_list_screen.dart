@@ -1,5 +1,6 @@
-import 'package:campus/cards/attendanceListCard.dart';
+import 'package:campus/screens/attendance/attendanceListCard.dart';
 import 'package:campus/screens/attendance/attendanceVar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -18,14 +19,26 @@ class AttendanceScreen extends StatefulWidget {
 }
 
 class _AttendanceScreenState extends State<AttendanceScreen> {
-  List member_index = [];
   int abs = 0;
   bool istapped = false;
+  var userData;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    print(widget.members);
+  }
+
+  getdata(index) async {
+    userData = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.members[index])
+        .get();
+
+    print(widget.members[index]);
+    print(userData.data()!['name']);
+    print(userData.data()!['Roll Number']);
   }
 
   @override
@@ -43,9 +56,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: 30,
+              itemCount: widget.members.length,
               itemBuilder: (context, index) {
-                return AttendaceListCard();
+                getdata(index);
+
+                return AttendaceListCard(
+                  memberuid: widget.members[index],
+                );
               },
             ),
           ),

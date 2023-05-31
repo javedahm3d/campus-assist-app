@@ -11,6 +11,7 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
+  bool isAnimating = false;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -48,11 +49,64 @@ class _PostCardState extends State<PostCard> {
                         ])
               ]),
             ),
+
+            // post image
             Container(
               color: Colors.blue,
               height: 350,
               width: double.infinity,
             ),
+
+            // GestureDetector(
+            //   onDoubleTap: () async {
+            //     // FireStoreMethods().likePost(
+            //     //     widget.snap['postId'], user.uid, widget.snap['likes']);
+            //     setState(() {
+            //       isAnimating = true;
+            //     });
+            //   },
+            //   child: ZoomOverlay(
+            //     modalBarrierColor: Colors.black12, // optional
+            //     minScale: 0.5, // optional
+            //     maxScale: 3.0, // optional
+            //     twoTouchOnly: true,
+            //     animationDuration: const Duration(milliseconds: 300),
+            //     animationCurve: Curves.fastOutSlowIn,
+            //     child: Stack(
+            //       alignment: Alignment.center,
+            //       children: [
+            //         SizedBox(
+            //           height: MediaQuery.of(context).size.height * 0.45,
+            //           child: Image(
+            //             image: NetworkImage(widget.snap['postURL']),
+            //             fit: BoxFit.cover,
+            //           ),
+            //         ),
+            //         AnimatedOpacity(
+            //           duration: const Duration(milliseconds: 200),
+            //           opacity: isAnimating ? 1 : 0,
+            //           child: LikeAnimation(
+            //             child: const Icon(
+            //               Icons.favorite,
+            //               color: Color.fromRGBO(255, 255, 255, 1),
+            //               size: 130,
+            //             ),
+            //             isAnimating: isAnimating,
+            //             duration: const Duration(
+            //               milliseconds: 400,
+            //             ),
+            //             onEnd: () {
+            //               setState(() {
+            //                 isAnimating = false;
+            //               });
+            //             },
+            //           ),
+            //         )
+            //       ],
+            //     ),
+            //   ),
+            // ),
+
             Row(
               children: [
                 SizedBox(width: 5),
