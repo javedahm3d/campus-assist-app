@@ -1,10 +1,14 @@
 import 'package:campus/screens/attendance/attendanceVar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AttendaceListCard extends StatefulWidget {
-  final memberuid;
-  const AttendaceListCard({super.key, required this.memberuid});
+  final name;
+  final uid;
+  final Roll;
+  const AttendaceListCard(
+      {super.key, required this.name, required this.Roll, required this.uid});
 
   @override
   State<AttendaceListCard> createState() => _AttendaceListCardState();
@@ -13,15 +17,24 @@ class AttendaceListCard extends StatefulWidget {
 class _AttendaceListCardState extends State<AttendaceListCard> {
   var userData;
   bool istapped = false;
+  bool ispresentcounterInitiated = false;
 
   @override
   void initState() {
+    // print(widget.snap['name']);
+    // print(widget.name);
     // TODO: implement initState
     super.initState();
-    getdata();
+    // presentList.add(widget.uid);
+    print('my list');
+    print(presentList);
+
+    // getdata();
   }
 
-  getdata() async {}
+  // getdata()  {
+
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +45,21 @@ class _AttendaceListCardState extends State<AttendaceListCard> {
           setState(() {
             istapped = !istapped;
             if (istapped) {
-              absentCount += 1;
-              PresentCount -= 1;
-              print(absentCount);
+              ispresentcounterInitiated = true;
+              absentList.add(widget.uid);
+              print(absentList);
+              presentList.remove(widget.uid);
+              print(presentList);
+              // context.read<MyIntProvider>().absentmarked();
+              // absentCount += 1;
+              // PresentCount -= 1;
+              // print(absentCount);
+            } else {
+              if (ispresentcounterInitiated) {
+                presentList.add(widget.uid);
+                absentList.remove(widget.uid);
+                // context.read<MyIntProvider>().presentmarked();
+              }
             }
           });
         },
@@ -56,12 +81,14 @@ class _AttendaceListCardState extends State<AttendaceListCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      userData.data()!['name'],
+                      widget.name,
+                      // widget.snap['name'],
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                     ),
                     Text(
-                      userData.data()!['Roll Number'],
+                      widget.Roll,
+                      // widget.snap['name'],
                       style:
                           TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
                     ),

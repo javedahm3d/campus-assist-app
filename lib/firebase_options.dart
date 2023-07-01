@@ -44,41 +44,40 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAbZfwJQYBmclysUFOKVNb1no9qMd7hqmM',
-    appId: '1:688131321583:web:8d1af5ffd11df3995db51a',
-    messagingSenderId: '688131321583',
-    projectId: 'authentication-b02f7',
-    authDomain: 'authentication-b02f7.firebaseapp.com',
-    storageBucket: 'authentication-b02f7.appspot.com',
+    apiKey: 'AIzaSyC01RbvPaWMobuTmSN9fwl9DBEPSMRmBw4',
+    appId: '1:174317304268:web:e3f10ab3e775d51d2bc569',
+    messagingSenderId: '174317304268',
+    projectId: 'campusassist-a472a',
+    authDomain: 'campusassist-a472a.firebaseapp.com',
+    storageBucket: 'campusassist-a472a.appspot.com',
+    measurementId: 'G-B1YR1C99VV',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD_L3r6riLiMbRI-7jy0sHOztkxEH5KEk8',
-    appId: '1:688131321583:android:a7468983642741185db51a',
-    messagingSenderId: '688131321583',
-    projectId: 'authentication-b02f7',
-    storageBucket: 'authentication-b02f7.appspot.com',
+    apiKey: 'AIzaSyCBrVdBh7Am728Z6YEJEtXQeZ1-FQgwivs',
+    appId: '1:174317304268:android:426dbaf32a0114012bc569',
+    messagingSenderId: '174317304268',
+    projectId: 'campusassist-a472a',
+    storageBucket: 'campusassist-a472a.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA2Me_jcw_OA9sc40Ylyxt2uCESHdiabnc',
-    appId: '1:688131321583:ios:9d857f83c1aeef1f5db51a',
-    messagingSenderId: '688131321583',
-    projectId: 'authentication-b02f7',
-    storageBucket: 'authentication-b02f7.appspot.com',
-    androidClientId: '688131321583-qk9lbh262cj793f01q2gubgpgbtimqlu.apps.googleusercontent.com',
-    iosClientId: '688131321583-efdvcipf8v04qk5b0m4mqp0d3v9bqh1h.apps.googleusercontent.com',
+    apiKey: 'AIzaSyAxOy3Ca2pfRbma0HmI3JbVdWblgqMSWxM',
+    appId: '1:174317304268:ios:05afd6de0d4769d52bc569',
+    messagingSenderId: '174317304268',
+    projectId: 'campusassist-a472a',
+    storageBucket: 'campusassist-a472a.appspot.com',
+    iosClientId: '174317304268-j0aaiu7e7h37n5k2ov8njssot4nremb3.apps.googleusercontent.com',
     iosBundleId: 'com.example.campus',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyA2Me_jcw_OA9sc40Ylyxt2uCESHdiabnc',
-    appId: '1:688131321583:ios:9d857f83c1aeef1f5db51a',
-    messagingSenderId: '688131321583',
-    projectId: 'authentication-b02f7',
-    storageBucket: 'authentication-b02f7.appspot.com',
-    androidClientId: '688131321583-qk9lbh262cj793f01q2gubgpgbtimqlu.apps.googleusercontent.com',
-    iosClientId: '688131321583-efdvcipf8v04qk5b0m4mqp0d3v9bqh1h.apps.googleusercontent.com',
+    apiKey: 'AIzaSyAxOy3Ca2pfRbma0HmI3JbVdWblgqMSWxM',
+    appId: '1:174317304268:ios:05afd6de0d4769d52bc569',
+    messagingSenderId: '174317304268',
+    projectId: 'campusassist-a472a',
+    storageBucket: 'campusassist-a472a.appspot.com',
+    iosClientId: '174317304268-j0aaiu7e7h37n5k2ov8njssot4nremb3.apps.googleusercontent.com',
     iosBundleId: 'com.example.campus',
   );
 }

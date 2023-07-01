@@ -1,12 +1,17 @@
 import 'dart:ui';
 
 import 'package:campus/components/square_grid_box.dart';
+import 'package:campus/screens/library/listview.dart';
 import 'package:campus/screens/campus_annoucements/annoucements_list_screen.dart';
 import 'package:campus/screens/classroom/class_list_page.dart';
 import 'package:campus/screens/events/feed_screen.dart';
+import 'package:campus/screens/fees/upi_payment.dart';
 import 'package:campus/screens/profile/profile_page.dart';
+import 'package:campus/screens/results/results_main_page.dart';
 import 'package:campus/widgets/my_appbar.dart';
 import 'package:campus/widgets/navigation_drawer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -19,6 +24,38 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var snap;
+  String name = '';
+  String roll = '';
+  String department = '';
+  String sem = '';
+  String photoURL = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getdata();
+    // snap = FirebaseFirestore.instance
+    //     .collection('users')
+    //     .doc(FirebaseAuth.instance.currentUser!.uid)
+    //     .get();
+  }
+
+  getdata() async {
+    snap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    setState(() {
+      name = snap.data()!['name'];
+      department = snap.data()!['department'];
+      roll = snap.data()!['Roll Number'];
+      sem = snap.data()!['sem'];
+      photoURL = snap.data()!['profile image'];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Userame',
+                          name,
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 18,
@@ -55,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                               fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          'SEM 7 | ETC A | 191104032',
+                          'SEM $sem | $department | $roll',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 14,
@@ -113,39 +150,46 @@ class _HomePageState extends State<HomePage> {
                             SizedBox(width: 20),
 
                             //due fees
-                            Container(
-                              width: 95,
-                              height: 95,
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                      begin: Alignment.topRight,
-                                      end: Alignment.bottomLeft,
-                                      colors: [
-                                        Color.fromARGB(50, 255, 255, 255),
-                                        Color.fromARGB(120, 255, 255, 255)
-                                      ]),
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(color: Colors.white)),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 8, bottom: 12),
-                                    child: Text(
-                                      'Fees Due',
+                            InkWell(
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => UPI_PAYMENT(),
+                                  )),
+                              child: Container(
+                                width: 95,
+                                height: 95,
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                        begin: Alignment.topRight,
+                                        end: Alignment.bottomLeft,
+                                        colors: [
+                                          Color.fromARGB(50, 255, 255, 255),
+                                          Color.fromARGB(120, 255, 255, 255)
+                                        ]),
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(color: Colors.white)),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8, bottom: 12),
+                                      child: Text(
+                                        'Fees Due',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Text(
+                                      '420',
                                       style: TextStyle(
                                           color: Colors.white,
-                                          fontWeight: FontWeight.bold),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 25),
                                     ),
-                                  ),
-                                  Text(
-                                    '420',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 25),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -165,8 +209,7 @@ class _HomePageState extends State<HomePage> {
                           alignment: Alignment.topRight,
                           child: CircleAvatar(
                             radius: 50,
-                            backgroundImage: NetworkImage(
-                                'https://cdna.artstation.com/p/assets/images/images/053/054/138/large/avetetsuya-studios-alien.jpg?1661309922'),
+                            backgroundImage: NetworkImage(photoURL),
                           )),
                     ),
                   )
@@ -250,6 +293,27 @@ class _HomePageState extends State<HomePage> {
                                   ]),
                                   color: Color.fromARGB(100, 68, 137, 255),
                                   borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: Stack(
+                                  children: [
+                                    Center(
+                                      child: Image.asset(
+                                        'lib/images/graph.png',
+                                        width: 310,
+                                        // height: 300,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                    Center(
+                                      child: Text(
+                                        '--------coming soon--------',
+                                        style: GoogleFonts.roboto(
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
                             ],
@@ -368,7 +432,7 @@ class _HomePageState extends State<HomePage> {
                                     title: 'Library',
                                     onTap: () => Navigator.of(context)
                                         .push(MaterialPageRoute(
-                                      builder: (context) => ClassListPage(),
+                                      builder: (context) => LibraryListScreen(),
                                     )),
                                   ),
                                   SquareGridTile(
@@ -377,7 +441,7 @@ class _HomePageState extends State<HomePage> {
                                     title: 'Results',
                                     onTap: () => Navigator.of(context)
                                         .push(MaterialPageRoute(
-                                      builder: (context) => ClassListPage(),
+                                      builder: (context) => ResultsMainPage(),
                                     )),
                                   ),
                                   SquareGridTile(

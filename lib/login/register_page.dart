@@ -23,6 +23,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final confirmPasswordController = TextEditingController();
   final fullNameController = TextEditingController();
   final rollNumberController = TextEditingController();
+  final departmentController = TextEditingController();
+  final semController = TextEditingController();
 
   // final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -44,7 +46,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (emailController.text.isNotEmpty ||
         fullNameController.text.isNotEmpty ||
         passwordController.text.isNotEmpty ||
-        rollNumberController.text.isNotEmpty) {
+        departmentController.text.isNotEmpty) {
       if (passwordController.text == confirmPasswordController.text) {
         try {
           await FirebaseAuth.instance
@@ -56,7 +58,11 @@ class _RegisterPageState extends State<RegisterPage> {
               "name": fullNameController.text,
               "email": emailController.text,
               "Roll Number": rollNumberController.text,
+              "department": departmentController.text,
+              'sem': semController.text,
               'uid': value.user!.uid,
+              'profile image':
+                  'https://cdna.artstation.com/p/assets/images/images/053/054/138/large/avetetsuya-studios-alien.jpg?1661309922'
             });
           });
           print('control was here');
@@ -126,7 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 // email textfield
                 MyTextField(
                   controller: fullNameController,
-                  hintText: 'Full name',
+                  hintText: 'Full name*',
                   obscureText: false,
                 ),
 
@@ -135,7 +141,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 // email textfield
                 MyTextField(
                   controller: emailController,
-                  hintText: 'email id',
+                  hintText: 'email id*',
                   obscureText: false,
                 ),
 
@@ -150,10 +156,28 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 10),
 
+                // department textfield
+                MyTextField(
+                  controller: departmentController,
+                  hintText: 'Department*',
+                  obscureText: false,
+                ),
+
+                const SizedBox(height: 10),
+
+                // sem textfield
+                MyTextField(
+                  controller: semController,
+                  hintText: 'semester',
+                  obscureText: false,
+                ),
+
+                const SizedBox(height: 10),
+
                 // password textfield
                 MyTextField(
                   controller: passwordController,
-                  hintText: 'Password',
+                  hintText: 'Password*',
                   obscureText: true,
                 ),
 
@@ -162,7 +186,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 // confirm password textfield
                 MyTextField(
                   controller: confirmPasswordController,
-                  hintText: 'Confirm Password',
+                  hintText: 'Confirm Password*',
                   obscureText: true,
                 ),
 

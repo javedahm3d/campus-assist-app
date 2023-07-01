@@ -96,11 +96,11 @@ class _ClassroomCardState extends State<ClassroomCard> {
 
                       //div
                       Text(
-                        widget.snap['div'],
+                        "${widget.snap['department']} ${widget.snap['div']} |  SEM ${widget.snap['semester']}",
                         style: const TextStyle(
                             color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400),
                       ),
 
                       //room

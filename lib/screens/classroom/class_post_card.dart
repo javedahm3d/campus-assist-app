@@ -17,6 +17,7 @@ class ClassPostCard extends StatefulWidget {
 
 class _ClassPostCardState extends State<ClassPostCard> {
   var attachments;
+  var snap;
 
   @override
   void initState() {
