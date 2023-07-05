@@ -1,4 +1,3 @@
-import 'package:campus/screens/attendance/attendance_screen.dart';
 import 'package:campus/screens/attendance/attendance_students_list_screen.dart';
 import 'package:campus/screens/classroom/class_list_page.dart';
 import 'package:campus/screens/classroom/class_post_card.dart';

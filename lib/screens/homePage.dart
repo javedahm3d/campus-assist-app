@@ -389,25 +389,55 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                           Container(
                                             height: 350,
-                                            child: ListView.builder(
-                                              itemCount: 7,
-                                              itemBuilder: (context, index) {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          bottom: 18),
-                                                  child: Text(
-                                                    "> " +
-                                                        '2023 jun - july results are published',
-                                                    style: GoogleFonts.aBeeZee(
-                                                        fontSize: 17,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Colors.white),
-                                                  ),
-                                                );
-                                              },
-                                            ),
+                                            child: StreamBuilder(
+                                                stream: FirebaseFirestore
+                                                    .instance
+                                                    .collection(
+                                                        'Campus announcements')
+                                                    .snapshots(),
+                                                builder: (context,
+                                                    AsyncSnapshot<
+                                                            QuerySnapshot<
+                                                                Map<String,
+                                                                    dynamic>>>
+                                                        snapshot) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
+                                                    return const Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    );
+                                                  }
+                                                  return ListView.builder(
+                                                      itemCount: snapshot.data!
+                                                                  .docs.length >
+                                                              7
+                                                          ? 7
+                                                          : snapshot.data!.docs
+                                                              .length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  vertical: 3),
+                                                          child: Text(
+                                                            "> ${snapshot.data!.docs[index].data()['title']}",
+                                                            style: GoogleFonts
+                                                                .aBeeZee(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        20,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500),
+                                                          ),
+                                                        );
+                                                      });
+                                                }),
                                           )
                                         ],
                                       ),

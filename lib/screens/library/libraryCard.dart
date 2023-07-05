@@ -9,11 +9,11 @@ libraryCard(BuildContext context, final snap) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
     child: InkWell(
-      // onTap: () => Navigator.of(context).push(MaterialPageRoute(
-      //   builder: (context) => BookDeatilsScreen(
-      //     snap: snap,
-      //   ),
-      // )),
+      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => BookDeatilsScreen(
+          snap: snap,
+        ),
+      )),
       child: Container(
         width: double.infinity,
         height: 90,

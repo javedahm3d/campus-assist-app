@@ -31,6 +31,7 @@ class _ViewAttendanceScreenState extends State<ViewAttendanceScreen> {
                 .collection('classes')
                 .doc(widget.classId)
                 .collection('attendance')
+                .orderBy('time', descending: true)
                 .snapshots(),
             builder: (context,
                 AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -60,7 +61,11 @@ class _ViewAttendanceScreenState extends State<ViewAttendanceScreen> {
                           border: Border.all(width: 1)),
                       child: Center(
                         child: Text(
-                          snapshot.data!.docs[index].data()['time'].toString(),
+                          snapshot.data!.docs[index]
+                              .data()['time']
+                              .toString()
+                              .replaceAll(' ', '  Time: ')
+                              .replaceAll('-', '/'),
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 22,

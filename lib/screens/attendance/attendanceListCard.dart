@@ -25,6 +25,7 @@ class _AttendaceListCardState extends State<AttendaceListCard> {
     // print(widget.name);
     // TODO: implement initState
     super.initState();
+
     // presentList.add(widget.uid);
     print('my list');
     print(presentList);

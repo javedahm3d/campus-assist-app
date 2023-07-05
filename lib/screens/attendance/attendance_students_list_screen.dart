@@ -21,7 +21,8 @@ class AttendanceScreen extends StatefulWidget {
 }
 
 class _AttendanceScreenState extends State<AttendanceScreen> {
-  int abs = 0;
+  int absentcount = 0;
+  int presentcount = 0;
   bool istapped = false;
   var userData;
   // Future future = FirebaseFirestore.instance.collection('users').doc(uid).get();
@@ -35,6 +36,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     setState(() {
       presentList = List.from(widget.members);
       absentList = [];
+      // absentcount = absentList.length;
+      // presentcount = presentList.length;
     });
 
     print(widget.members);
@@ -77,6 +80,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             itemBuilder: (context, index) {
               String uid = widget.members[index];
               // print(widget.members[index]);
+
               print(uid);
               return FutureBuilder<DocumentSnapshot>(
                 future: FirebaseFirestore.instance
@@ -96,6 +100,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     // For example, assuming each document has a 'name' field
                     String userName = snapshot.data!.get('name');
                     String rollnumber = snapshot.data!.get('Roll Number');
+                    // if (!presentROLLList.contains(rollnumber)) {
+                    //   presentROLLList.add(rollnumber);
+                    // }
 
                     // return ListTile(
                     //   title: Text(userName),
@@ -181,6 +188,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     InkWell(
                       onTap: () async {
                         print('after submit');
+                        // print(presentROLLList);
                         // print(presentList);
                         // print(absentList);
 
