@@ -52,13 +52,15 @@ dependencies:
   flutter_lints: ^2.0.1
   intl: ^0.17.0
   expandable_text: ^2.3.0
-  open_file_plus: ^3.4.0
+  open_file_plus: ^3.4.1
   google_fonts: ^4.0.3
   path_provider: ^2.0.14
   dio: ^5.1.1
   gallery_saver: ^2.3.2
   image_picker: ^1.0.0
   upi_india: ^3.0.1
+  file_saver: ^0.2.6
+  permission_handler: ^10.4.2
   
 
 dev_dependencies:

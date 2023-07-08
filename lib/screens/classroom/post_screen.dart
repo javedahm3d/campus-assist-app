@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:open_file_plus/open_file_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 
@@ -17,6 +20,7 @@ class PostScreen extends StatefulWidget {
 class _PostScreenState extends State<PostScreen> {
   late Future<ListResult> postFiles;
   Map<int, double> downloadProgressIndicator = {};
+  // bool filealreadyexist = false;
 
   @override
   void initState() {
@@ -29,31 +33,46 @@ class _PostScreenState extends State<PostScreen> {
     });
   }
 
+  checkFileExists() {}
+
   downloadFile(Reference ref, int index) async {
     final url = await ref.getDownloadURL();
-    final dir = await getTemporaryDirectory();
+    final dir = await getApplicationDocumentsDirectory();
     final path = '${dir.path}/${ref.name}';
     print('mobile path    :' + path);
-    await Dio().download(
-      url,
-      path,
-      onReceiveProgress: (count, total) {
-        double progress = count / total;
-        setState(() {
-          downloadProgressIndicator[index] = progress;
-        });
-      },
-    );
+    print(url);
 
-    if (url.contains('.mp4')) {
-      await GallerySaver.saveVideo(path, toDcim: true);
-    }
-    if (url.contains('.jpg')) {
-      await GallerySaver.saveImage(path, toDcim: true);
-    }
+    bool fileExist = await File(path).exists();
 
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text('Downloaded ${ref.name}')));
+    if (fileExist) {
+      OpenFile.open(path);
+    } else {
+      await Dio().download(
+        url,
+        path,
+        onReceiveProgress: (count, total) {
+          double progress = count / total;
+          setState(() {
+            downloadProgressIndicator[index] = progress;
+          });
+        },
+        deleteOnError: true,
+      );
+
+      OpenFile.open(path);
+
+      if (url.contains('.mp4')) {
+        await GallerySaver.saveVideo(path, toDcim: true);
+      }
+      if (url.contains('.jpg')) {
+        await GallerySaver.saveImage(path, toDcim: true);
+      } else {
+        // await fi
+      }
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Downloaded ${ref.name}')));
+    }
   }
 
   @override
@@ -111,24 +130,34 @@ class _PostScreenState extends State<PostScreen> {
                                     border:
                                         Border.all(color: Colors.grey.shade500),
                                   ),
-                                  child: ListTile(
-                                      leading: Icon(Icons.attach_file_outlined),
-                                      title: Text(
-                                        file.name,
-                                        style: GoogleFonts.roboto(fontSize: 15),
-                                      ),
-                                      trailing: IconButton(
-                                          splashColor: Colors.orangeAccent,
-                                          onPressed: () =>
-                                              downloadFile(file, index),
-                                          icon: Icon(Icons.download)),
-                                      subtitle: progress != null
-                                          ? LinearProgressIndicator(
-                                              value: progress,
-                                              backgroundColor:
-                                                  Colors.orangeAccent,
-                                            )
-                                          : null),
+                                  child: InkWell(
+                                    onTap: () => downloadFile(file, index),
+                                    child: ListTile(
+                                        leading:
+                                            Icon(Icons.attach_file_outlined),
+                                        title: Text(
+                                          file.name,
+                                          style:
+                                              GoogleFonts.roboto(fontSize: 15),
+                                        ),
+                                        // trailing: progress == 1.0
+                                        //     ? IconButton(
+                                        //         onPressed: () {},
+                                        //         icon: Icon(Icons.file_open))
+                                        //     : IconButton(
+                                        //         splashColor:
+                                        //             Colors.orangeAccent,
+                                        //         onPressed: () =>
+                                        //             downloadFile(file, index),
+                                        //         icon: Icon(Icons.download)),
+                                        subtitle: progress != null
+                                            ? LinearProgressIndicator(
+                                                value: progress,
+                                                backgroundColor:
+                                                    Colors.orangeAccent,
+                                              )
+                                            : null),
+                                  ),
                                 ));
                           },
                         );

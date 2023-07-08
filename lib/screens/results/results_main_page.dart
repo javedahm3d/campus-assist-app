@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:campus/screens/results/results_listpage.dart';
 import 'package:campus/widgets/my_appbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -81,54 +82,6 @@ class _ResultsMainPageState extends State<ResultsMainPage> {
                   SizedBox(
                     height: 20,
                   ),
-                  // Container(
-                  //   decoration: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(15),
-                  //     //shape: BoxShape.circle,
-                  //     color: Colors.orangeAccent,
-                  //   ),
-                  //   child: InputDecorator(
-                  //     decoration: InputDecoration(
-                  //       border: OutlineInputBorder(
-                  //           borderRadius: BorderRadius.circular(15.0)),
-                  //       contentPadding: const EdgeInsets.all(10),
-                  //     ),
-                  //     child: DropdownButtonHideUnderline(
-                  //       child: DropdownButton<String>(
-                  //           dropdownColor: Colors.orangeAccent[200],
-                  //           isDense: true,
-                  //           value: defaultCourse,
-                  //           isExpanded: true,
-                  //           menuMaxHeight: 350,
-                  //           items: [
-                  //             const DropdownMenuItem(
-                  //               child: Text('Select Revised Course'),
-                  //               value: "",
-                  //             ),
-                  //             ...revisedCourses
-                  //                 .map<DropdownMenuItem<String>>((e) {
-                  //               return DropdownMenuItem(
-                  //                   child: Text(e['title']),
-                  //                   value: e['value']);
-                  //             }).toList(),
-                  //           ],
-                  //           onChanged: (courseValue) {
-                  //             defaultCourse = courseValue!;
-                  //             requiredCourse = defaultCourse;
-                  //             print(requiredCourse);
-                  //             requiredCourse =
-                  //                 requiredCourse.replaceAll('1', 'RC 07-08');
-                  //             requiredCourse =
-                  //                 requiredCourse.replaceAll('2', 'RC 16-17');
-                  //             requiredCourse =
-                  //                 requiredCourse.replaceAll('3', 'RC 19-20');
-                  //             print(requiredCourse);
-
-                  //             //print('selected value $value');
-                  //           }),
-                  //     ),
-                  //   ),
-                  // ),
                   Text(
                     'Select your Department and semester and click continue',
                     style: GoogleFonts.aBeeZee(
@@ -260,26 +213,15 @@ class _ResultsMainPageState extends State<ResultsMainPage> {
                   ),
                   InkWell(
                     onTap: () {
-                      if (defaultDepartment == '' || defaultSemester == ''
-                          // ||
-                          // defaultCourse == ''
-                          ) {
+                      if (defaultDepartment == '' || defaultSemester == '') {
                         fillContents(context);
                       } else {
-                        // FirebaseFirestore.instance
-                        //     .collection(defaultCourse)
-                        //     .doc(defaultDepartment)
-                        //     .collection(defaultSemester)
-                        //     .doc('result')
-                        //     .set({'file': 'link'});
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ResultsListPage(
+                              sem: requiredSemester, dept: requiredDepartment),
+                        ));
 
-                        // Navigator.of(context).push(MaterialPageRoute(
-                        //   builder: (context) => UploadResult(
-                        //     // course: requiredCourse,
-                        //     department: requiredDepartment,
-                        //     sem: requiredSemester,
-                        //   ),
-                        // ));
+                        // var snap = FirebaseFirestore.instance.collection('results').doc(defaultSemester).collection(defaultDepartment)
                       }
                     },
                     child: Container(
