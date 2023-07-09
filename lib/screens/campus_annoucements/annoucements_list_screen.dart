@@ -45,18 +45,23 @@ class _AnnoucementScreenState extends State<AnnoucementScreen> {
                       color: Colors.lightBlue.shade100,
                       child: SizedBox(
                         width: double.infinity,
-                        height: 70,
+                        height: 80,
                         child: Padding(
                           padding: const EdgeInsets.all(15)
                               .copyWith(bottom: 5, right: 5),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                snapshot.data!.docs[index].data()['title'],
-                                style: GoogleFonts.aBeeZee(
-                                    fontSize: 17, fontWeight: FontWeight.bold),
-                                softWrap: true,
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Text(
+                                  snapshot.data!.docs[index].data()['title'],
+                                  maxLines: 2,
+                                  style: GoogleFonts.aBeeZee(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                  softWrap: true,
+                                ),
                               ),
                               Spacer(),
                               Align(

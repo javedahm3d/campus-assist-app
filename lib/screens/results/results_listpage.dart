@@ -23,6 +23,7 @@ class _ResultsListPageState extends State<ResultsListPage> {
 
   downloadFile(String url, String fileName) async {
     print('inside download function');
+    print(fileName);
     final dir = await getApplicationDocumentsDirectory();
     final path = '${dir.path}/$fileName';
     print('mobile path    :' + path);
@@ -73,6 +74,7 @@ class _ResultsListPageState extends State<ResultsListPage> {
                 .collection('results')
                 .doc(widget.sem)
                 .collection(widget.dept)
+                .orderBy('RC', descending: true)
                 .snapshots(),
             builder: (context,
                 AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -90,10 +92,12 @@ class _ResultsListPageState extends State<ResultsListPage> {
                         const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
                     child: InkWell(
                       onTap: () {
-                        print(snapshot.data!.docs[index].data()['FileURL']);
+                        // print(snapshot.data!.docs[index].data()['FileURL']);
+                        Reference ref = FirebaseStorage.instance
+                            .ref('results/${widget.sem}/${widget.dept}');
                         downloadFile(
                             snapshot.data!.docs[index].data()['FileURL'],
-                            snapshot.data!.docs[index].data()['RC']);
+                            "${snapshot.data!.docs[index].data()['RC']}-${widget.dept}-${widget.sem}.pdf");
                       },
                       child: Card(
                         color: Colors.lightBlue.shade200,
@@ -102,14 +106,17 @@ class _ResultsListPageState extends State<ResultsListPage> {
                             height: 50,
                             child: Center(
                                 child: Center(
-                              child: Text(
-                                snapshot.data!.docs[index]
-                                    .data()['RC']
-                                    .toString(),
-                                style: GoogleFonts.aBeeZee(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.deepPurple),
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Text(
+                                  snapshot.data!.docs[index]
+                                      .data()['RC']
+                                      .toString(),
+                                  style: GoogleFonts.aBeeZee(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.deepPurple),
+                                ),
                               ),
                             ))),
                       ),

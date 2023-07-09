@@ -155,7 +155,9 @@ class _ClassPostCardState extends State<ClassPostCard> {
               ),
               InkWell(
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => CommentScreen(),
+                  builder: (context) => CommentScreen(
+                    snap: widget.snap,
+                  ),
                 )),
                 child: Padding(
                   padding:

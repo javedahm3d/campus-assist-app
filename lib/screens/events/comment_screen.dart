@@ -1,69 +1,118 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
+
+import 'comments_card.dart';
 
 class CommentScreen extends StatefulWidget {
-  const CommentScreen({super.key});
+  final snap;
+  const CommentScreen({super.key, required this.snap});
 
   @override
   State<CommentScreen> createState() => _CommentScreenState();
 }
 
 class _CommentScreenState extends State<CommentScreen> {
+  final TextEditingController commentController = TextEditingController();
+  FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+
+  String username = '';
+  String userphoto = '';
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+  FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+
+  var userSnap;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getdata();
+  }
+
+  getdata() async {
+    userSnap = await _firebaseFirestore.collection('users').doc(uid).get();
+
+    setState(() {
+      username = userSnap.data()!['name'];
+      userphoto = userSnap.data()!['profile image'];
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    commentController.dispose();
+  }
+
+  Future<String> postComment(String postId, String comment, String uid,
+      String username, String profileImage) async {
+    String res = 'some error occured';
+    try {
+      if (comment.isNotEmpty) {
+        String commentId = const Uuid().v1();
+        await firebaseFirestore
+            .collection('event posts')
+            .doc(postId)
+            .collection('comments')
+            .doc(commentId)
+            .set({
+          'postId': postId,
+          'commentId': commentId,
+          'profileImage': profileImage,
+          'username': username,
+          'uid': uid,
+          'date': DateTime.now(),
+          'comment': comment,
+          'likes': [],
+        });
+        res = 'posted!';
+      } else {
+        res = "please enter your comment";
+      }
+    } catch (e) {
+      res = e.toString();
+    }
+    return res;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        backgroundColor: Colors.orangeAccent,
         leading: BackButton(color: Colors.black),
         title: Text(
           'Comments',
           style: TextStyle(color: Colors.black),
         ),
-        backgroundColor: Colors.white,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
       ),
-
-      //body
       body: StreamBuilder(
-        builder: (context, snapshot) {
-          return Container(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 20,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 5),
-                            child: Text('username',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Text(
-                              'my comment',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          );
+        stream: FirebaseFirestore.instance
+            .collection('event posts')
+            .doc(widget.snap['post id'])
+            .collection('comments')
+            .orderBy('date', descending: true)
+            .snapshots(),
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) => CommentsCard(
+                    snap: snapshot.data!.docs[index].data(),
+                  ));
         },
       ),
-
-      //post comments
       bottomSheet: SafeArea(
           child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10)
@@ -72,27 +121,32 @@ class _CommentScreenState extends State<CommentScreen> {
           children: [
             CircleAvatar(
               radius: 20,
-              backgroundImage: NetworkImage(''),
+              backgroundImage: NetworkImage(userphoto),
             ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 8),
                 child: TextField(
-                  // controller: commentController,
+                  controller: commentController,
                   decoration: InputDecoration(
                     // enabledBorder: OutlineInputBorder(
                     // borderSide: BorderSide(
                     // width: 1, color: Colors.grey
                     // )
                     // ),
-                    hintText: 'comment as usernamr',
+                    hintText: 'comment as $username',
                   ),
                 ),
               ),
             ),
             IconButton(
-                onPressed: () {
-                  print('post pressed');
+                onPressed: () async {
+                  await postComment(widget.snap['post id'],
+                      commentController.text, uid, username, userphoto);
+
+                  setState(() {
+                    commentController.text = '';
+                  });
                 },
                 icon: Icon(CupertinoIcons.paperplane))
           ],
