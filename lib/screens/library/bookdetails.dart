@@ -35,7 +35,7 @@ class _BookDeatilsScreenState extends State<BookDeatilsScreen> {
           Container(
             child: Center(
               child: Image.network(
-                'https://cdn.img.gen.in/kottayam/booksdeal/30738/Portfolio.jpg?biz=2596&width=300&v=20210619032514',
+                widget.snap['url'],
                 fit: BoxFit.cover,
               ),
             ),

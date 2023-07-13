@@ -18,7 +18,7 @@ class _ClassroomCardState extends State<ClassroomCard> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 0.5, horizontal: 3),
       child: InkWell(
         onTap: () => Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => ClassScreen(
@@ -35,13 +35,13 @@ class _ClassroomCardState extends State<ClassroomCard> {
                   borderRadius: BorderRadius.circular(10)),
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.9,
-                height: MediaQuery.of(context).size.height * 0.13,
+                // height: MediaQuery.of(context).size.height * 0.13,
                 decoration: BoxDecoration(
                     color: const Color.fromARGB(255, 235, 235, 235),
                     image: const DecorationImage(
                         image: AssetImage('lib/images/class_bg1.png')),
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey)),
+                    border: Border.all(color: Colors.white, width: 4)),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 14),
                   child: Column(

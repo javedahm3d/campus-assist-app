@@ -21,6 +21,7 @@ class _ClassListPageState extends State<ClassListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.lightBlue.shade100,
       appBar: MyAppBar(),
 
       // actions: [

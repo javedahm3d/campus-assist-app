@@ -1,4 +1,5 @@
 import 'package:campus/screens/attendance/attendance_students_list_screen.dart';
+import 'package:campus/screens/attendance/view_attendace.dart';
 import 'package:campus/screens/classroom/class_list_page.dart';
 import 'package:campus/screens/classroom/class_post_card.dart';
 import 'package:campus/screens/classroom/upload_post_screen.dart';
@@ -20,6 +21,23 @@ class ClassScreen extends StatefulWidget {
 
 class _ClassScreenState extends State<ClassScreen> {
   Stream<QuerySnapshot<Map<String, dynamic>>>? snapshot;
+  var ownersnap;
+  String ownerPhoto = '';
+  String uid = FirebaseAuth.instance.currentUser!.uid;
+  FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getdata();
+  }
+
+  getdata() async {
+    ownersnap = await _firebaseFirestore.collection('users').doc(uid).get();
+    setState(() {
+      ownerPhoto = ownersnap.data()!['profile image'];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +62,7 @@ class _ClassScreenState extends State<ClassScreen> {
                         ? Text('edit class')
                         : Text('leave class')),
                 PopupMenuItem(value: 2, child: Text('view class code')),
+                PopupMenuItem(value: 3, child: Text('view attendance'))
               ],
               onSelected: (value) {
                 if (value == 1) {
@@ -117,38 +136,56 @@ class _ClassScreenState extends State<ClassScreen> {
                         builder: (context) => ViewClassCode(snap: widget.snap),
                       ));
                 }
+
+                if (value == 3) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ViewAttendanceScreen(
+                          classId: widget.snap['class id'],
+                          className: widget.snap['class'],
+                        ),
+                      ));
+                }
               },
             )
           ],
         ),
-        body: Center(
-            child: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('classes')
-              .doc(widget.snap['class id'])
-              .collection('class posts')
-              .orderBy('published time', descending: true)
-              .snapshots(),
-          builder: (context,
-              AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-            print(snapshot);
+        body: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('lib/images/doodle_bg.png'),
+                  fit: BoxFit.cover)),
+          child: Center(
+              child: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('classes')
+                .doc(widget.snap['class id'])
+                .collection('class posts')
+                .orderBy('published time', descending: true)
+                .snapshots(),
+            builder: (context,
+                AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+              print(snapshot);
 
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            return ListView.builder(
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                return ClassPostCard(
-                  snap: snapshot.data!.docs[index].data(),
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
                 );
-              },
-            );
-          },
-        )),
+              }
+
+              return ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  return ClassPostCard(
+                    snap: snapshot.data!.docs[index].data(),
+                    userPhoto: ownerPhoto,
+                  );
+                },
+              );
+            },
+          )),
+        ),
         drawer: const MyNavigationDrawer(),
 
         //floating button

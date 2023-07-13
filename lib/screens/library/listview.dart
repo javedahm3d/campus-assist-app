@@ -82,7 +82,10 @@ class _LibraryListScreenState extends State<LibraryListScreen> {
         ),
       ),
       body: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('library').snapshots(),
+          stream: FirebaseFirestore.instance
+              .collection('library')
+              .where('name', isGreaterThanOrEqualTo: _searchController.text)
+              .snapshots(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {

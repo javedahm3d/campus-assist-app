@@ -36,11 +36,11 @@ class _UPI_PAYMENTState extends State<UPI_PAYMENT> {
   Future<UpiResponse> initiateTransaction(UpiApp app) async {
     return _upiIndia.startTransaction(
       app: app,
-      receiverUpiId: "9078600498@ybl",
-      receiverName: 'Md Azharuddin',
+      receiverUpiId: "chaudharyjavedahmed-2@okhdfcbank",
+      receiverName: 'Javed Choudhary',
       transactionRefId: 'TestingUpiIndiaPlugin',
       transactionNote: 'Not actual. Just an example.',
-      amount: 1.00,
+      amount: 10,
     );
   }
 

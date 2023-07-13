@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:campus/components/square_grid_box.dart';
 import 'package:campus/contacts/contacts_listPage.dart';
+import 'package:campus/contatcts/contact.dart';
 import 'package:campus/screens/library/listview.dart';
 import 'package:campus/screens/campus_annoucements/annoucements_list_screen.dart';
 import 'package:campus/screens/classroom/class_list_page.dart';
@@ -108,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         Spacer(),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
+                          padding: const EdgeInsets.only(bottom: 15),
                           child: Row(
                             children: [
                               //attendance
@@ -478,7 +479,7 @@ class _HomePageState extends State<HomePage> {
                                 InkWell(
                                   onTap: () => Navigator.of(context)
                                       .push(MaterialPageRoute(
-                                    builder: (context) => ContactsListPage(),
+                                    builder: (context) => ContactsScreen(),
                                   )),
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: 12),

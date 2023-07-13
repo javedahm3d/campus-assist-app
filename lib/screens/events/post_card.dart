@@ -25,12 +25,10 @@ class _PostCardState extends State<PostCard> {
   bool isAnimating = false;
 
   FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-  int likeCount = 0;
 
   @override
   void initState() {
     super.initState();
-    likeCount = widget.snap['likes'].length;
     getComments();
   }
 
@@ -43,7 +41,6 @@ class _PostCardState extends State<PostCard> {
             .update({
           'likes': FieldValue.arrayRemove([widget.uid])
         });
-        likeCount -= 1;
       } else {
         await firebaseFirestore
             .collection('event posts')
@@ -51,7 +48,6 @@ class _PostCardState extends State<PostCard> {
             .update({
           'likes': FieldValue.arrayUnion([widget.uid])
         });
-        likeCount += 1;
       }
     } catch (e) {
       print(e.toString());
@@ -272,7 +268,7 @@ class _PostCardState extends State<PostCard> {
                         fontWeight: FontWeight.bold,
                       ),
                   child: Text(
-                    '$likeCount likes',
+                    '${widget.snap['likes'].length} likes',
                   ),
                 ),
                 const Spacer(),

@@ -1,3 +1,4 @@
+import 'package:campus/screens/classroom/class_comments.dart';
 import 'package:campus/screens/classroom/post_screen.dart';
 import 'package:campus/screens/events/comment_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,7 +10,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ClassPostCard extends StatefulWidget {
   final snap;
-  const ClassPostCard({super.key, required this.snap});
+  final userPhoto;
+  const ClassPostCard({super.key, required this.snap, this.userPhoto});
 
   @override
   State<ClassPostCard> createState() => _ClassPostCardState();
@@ -17,7 +19,6 @@ class ClassPostCard extends StatefulWidget {
 
 class _ClassPostCardState extends State<ClassPostCard> {
   var attachments;
-  var snap;
 
   @override
   void initState() {
@@ -48,6 +49,7 @@ class _ClassPostCardState extends State<ClassPostCard> {
                   Padding(
                     padding: const EdgeInsets.all(10),
                     child: CircleAvatar(
+                      backgroundImage: NetworkImage(widget.userPhoto),
                       radius: 22,
                     ),
                   ),
@@ -155,7 +157,7 @@ class _ClassPostCardState extends State<ClassPostCard> {
               ),
               InkWell(
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => CommentScreen(
+                  builder: (context) => ClassCommentScreen(
                     snap: widget.snap,
                   ),
                 )),
