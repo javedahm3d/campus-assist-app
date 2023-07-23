@@ -1,4 +1,5 @@
 import 'package:campus/screens/classroom/class_comments.dart';
+import 'package:campus/screens/classroom/edit_post.dart';
 import 'package:campus/screens/classroom/post_screen.dart';
 import 'package:campus/screens/events/comment_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -78,28 +79,37 @@ class _ClassPostCardState extends State<ClassPostCard> {
                   ),
                   Spacer(),
                   PopupMenuButton(
-                      child: Icon(Icons.more_vert),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      itemBuilder: (context) => [
-                            PopupMenuItem(onTap: () {}, child: Text('edit ')),
-                            PopupMenuItem(
-                                onTap: () async {
-                                  await FirebaseFirestore.instance
-                                      .collection('classes')
-                                      .doc(widget.snap['class Id'])
-                                      .collection('class posts')
-                                      .doc(widget.snap['post Id'])
-                                      .delete();
+                    child: Icon(Icons.more_vert),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    itemBuilder: (context) => [
+                      PopupMenuItem(value: 1, child: Text('edit ')),
+                      PopupMenuItem(
+                          onTap: () async {
+                            await FirebaseFirestore.instance
+                                .collection('classes')
+                                .doc(widget.snap['class Id'])
+                                .collection('class posts')
+                                .doc(widget.snap['post Id'])
+                                .delete();
 
-                                  await FirebaseStorage.instance
-                                      .ref()
-                                      .child(
-                                          'class posts/${widget.snap['class Id']}/${widget.snap['post Id']}')
-                                      .delete();
-                                },
-                                child: const Text('delete ')),
-                          ])
+                            await FirebaseStorage.instance
+                                .ref()
+                                .child(
+                                    'class posts/${widget.snap['class Id']}/${widget.snap['post Id']}')
+                                .delete();
+                          },
+                          child: const Text('delete ')),
+                    ],
+                    onSelected: (value) {
+                      if (value == 1) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              EditPostScreen(postSnap: widget.snap),
+                        ));
+                      }
+                    },
+                  )
                 ],
               ),
               InkWell(

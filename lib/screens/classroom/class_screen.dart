@@ -58,9 +58,7 @@ class _ClassScreenState extends State<ClassScreen> {
               itemBuilder: (context) => [
                 PopupMenuItem(
                     value: 1,
-                    child: widget.isOwner
-                        ? Text('edit class')
-                        : Text('leave class')),
+                    child: widget.isOwner ? null : Text('leave class')),
                 PopupMenuItem(value: 2, child: Text('view class code')),
                 PopupMenuItem(value: 3, child: Text('view attendance'))
               ],
@@ -68,66 +66,71 @@ class _ClassScreenState extends State<ClassScreen> {
                 if (value == 1) {
                   print("1 pressed");
                   // Navigator.of(context).pop();
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Leaving Class'),
-                        content: Text("Are You Sure Want To Proceed ?"),
-                        actions: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              InkWell(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "YES",
-                                    style: TextStyle(fontSize: 18),
+                  if (widget.snap['owner uid'] != uid) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Leaving Class'),
+                          content: Text("Are You Sure Want To Proceed ?"),
+                          actions: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                InkWell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "YES",
+                                      style: TextStyle(fontSize: 18),
+                                    ),
                                   ),
-                                ),
-                                onTap: () async {
-                                  //Put your code here which you want to execute on Yes button click.
-                                  await FirebaseFirestore.instance
-                                      .collection('classes')
-                                      .doc(widget.snap['class id'])
-                                      .update({
-                                    'members': FieldValue.arrayRemove(
-                                        // [userData.data()!['Roll Number'].toString()]
-                                        [
-                                          FirebaseAuth.instance.currentUser!.uid
-                                        ])
-                                  });
-                                  // Navigator.pushAndRemoveUntil(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) =>
-                                  //             ClassListPage()),
-                                  //     (route) => false);
+                                  onTap: () async {
+                                    //Put your code here which you want to execute on Yes button click.
+                                    await FirebaseFirestore.instance
+                                        .collection('classes')
+                                        .doc(widget.snap['class id'])
+                                        .update({
+                                      'members': FieldValue.arrayRemove(
+                                          // [userData.data()!['Roll Number'].toString()]
+                                          [
+                                            FirebaseAuth
+                                                .instance.currentUser!.uid
+                                          ])
+                                    });
+                                    // Navigator.pushAndRemoveUntil(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             ClassListPage()),
+                                    //     (route) => false);
 
-                                  Navigator.popUntil(context,
-                                      (Route<dynamic> route) => route.isFirst);
-                                },
-                              ),
-                              InkWell(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "NO",
-                                    style: TextStyle(fontSize: 18),
-                                  ),
+                                    Navigator.popUntil(
+                                        context,
+                                        (Route<dynamic> route) =>
+                                            route.isFirst);
+                                  },
                                 ),
-                                onTap: () {
-                                  //Put your code here which you want to execute on No button click.
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          )
-                        ],
-                      );
-                    },
-                  );
+                                InkWell(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "NO",
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    //Put your code here which you want to execute on No button click.
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            )
+                          ],
+                        );
+                      },
+                    );
+                  }
                 }
                 if (value == 2) {
                   Navigator.push(
